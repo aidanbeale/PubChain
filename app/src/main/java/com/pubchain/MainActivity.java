@@ -7,13 +7,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.pubchain.Alcohol;
-import com.pubchain.DisplayHistory;
-import com.pubchain.QueryBlockchain;
-
 import java.util.ArrayList;
-
-import com.pubchain.R;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -52,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
         alcohols.add(new Alcohol("Carlton Draught", 5.0, 1.3));
         alcohols.add(new Alcohol("Carlton Draught", 5.0, 1.3));
 
-        Intent i = new Intent(MainActivity.this, DisplayHistory.class);
+        Intent i = new Intent(MainActivity.this, QueryBlockchain.class);
         i.putParcelableArrayListExtra("alcohols", alcohols);
         startActivity(i);
     }
