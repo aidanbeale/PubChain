@@ -1,6 +1,5 @@
 package com.pubchain;
 
-import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.Toast;
@@ -14,11 +13,15 @@ import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.eclipsesource.json.Json;
+import com.eclipsesource.json.JsonObject;
+import com.eclipsesource.json.JsonValue;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -50,18 +53,15 @@ public class QueryBlockchain extends AppCompatActivity {
     }
 
     private void manageRequests() {
-        //makeDrinksRequest();
-        makeTokenCountRequest();
-
-        // We expect blockchain query to return the alcohols > 0
-        // tokenCount cannot be less than 0
-        while(tokenFinished && alcoholFinished) {
-            try {
-                Thread.sleep(50);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+        Bundle extras = getIntent().getExtras();
+        if (extras.get("request").equals("history")) {
+            makeDrinksRequest();
+        } else if (extras.get("request").equals("getToken")) {
+            makeTokenGetCountRequest();
+        } else if (extras.get("request").equals("sendToken")) {
+            makeTokenSetCountRequest();
         }
+
         //Intent i = new Intent(QueryBlockchain.this, MainActivity.class);
         //i.putParcelableArrayListExtra("alcohols", alcohols);
         //i.putExtra("tokenCount", tokenCount);
@@ -101,7 +101,7 @@ public class QueryBlockchain extends AppCompatActivity {
         queue.add(stringRequest);
     }
 
-    private void makeTokenCountRequest() {
+    private void makeTokenSetCountRequest() {
         RequestQueue queue = Volley.newRequestQueue(QueryBlockchain.this);
 
         try {
@@ -154,6 +154,82 @@ public class QueryBlockchain extends AppCompatActivity {
         // Add the request to the RequestQueue.
         stringRequest.setRetryPolicy(new DefaultRetryPolicy(60 * 1000, 0,DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         queue.add(stringRequest);
+    }
+
+    private void makeTokenGetCountRequest() {
+        RequestQueue queue = Volley.newRequestQueue(QueryBlockchain.this);
+
+        try {
+            jsonBody = new JSONObject();
+            jsonBody.put("jsonrpc", jsonrpc);
+            jsonBody.put("method", method);
+            JSONArray arr = new JSONArray();
+            arr.put(ACC_ADDR[0]);
+            arr.put(ACC_ADDR[1]);
+            jsonBody.put("params", arr);
+
+            requestBody = jsonBody.toString();
+        } catch (Exception e) {
+            Toast.makeText(getApplicationContext(), "Dis bad:" + e.toString(), Toast.LENGTH_LONG).show();
+        }
+
+        // Request a string response from the provided URL.
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() { // TODO Request type
+
+            @Override
+            public void onResponse(String response) {
+                Toast.makeText(getApplicationContext(), "Dis good:" + response, Toast.LENGTH_LONG).show();
+                JsonObject jsonResponse = stringToJsonObject(response);
+                String result = jsonResponse.getString("result", "actionError");
+                BigInteger n = new BigInteger(result.substring(2), 16);
+                BigInteger d = new BigInteger("100000000000000000");
+                String stringCount = (n.divide(d).toString());
+                tokenCount = Double.valueOf(stringCount) / 10;
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                System.out.print(error.toString());
+
+                Toast.makeText(getApplicationContext(), "Error querying server\nError Code: " + error.toString(), Toast.LENGTH_LONG).show();
+            }
+        }) {
+
+            @Override
+            public String getBodyContentType() {
+                return String.format("application/json; charset=utf-8");
+            }
+
+            @Override
+            public byte[] getBody() throws AuthFailureError {
+                try {
+                    return requestBody == null ? null : requestBody.getBytes("utf-8");
+                } catch (UnsupportedEncodingException uee) {
+                    VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s",
+                            requestBody, "utf-8");
+                    return null;
+                }
+            }
+        };
+        // Add the request to the RequestQueue.
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(60 * 1000, 0,DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        queue.add(stringRequest);
+    }
+
+    private JsonObject stringToJsonObject(String stringToJson) {
+        JsonValue jsonResponse;
+
+        try {
+            // Parses the string response into a JsonValue
+            jsonResponse = Json.parse(stringToJson);
+            // Converts the JsonValue into an Object
+            JsonObject objectResponse = jsonResponse.asObject();
+            // Returns JsonObject
+            return objectResponse;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     }

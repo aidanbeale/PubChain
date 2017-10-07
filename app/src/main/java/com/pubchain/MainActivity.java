@@ -53,10 +53,11 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void purchaseDrinkPressed(View view) {
-        //Intent i = new Intent(MainActivity.this, QueryBlockchain.class);
-        //startActivity(i);
+        Intent i = new Intent(MainActivity.this, QueryBlockchain.class);
+        i.putExtra("request", "getToken");
+        startActivity(i);
 
-        createTestData();
+        //createTestData();
 
         // beer purchased
         // add to blockchain
@@ -67,6 +68,12 @@ public class MainActivity extends AppCompatActivity {
 
     private void updateUserInformation() {
 
+    }
+
+    public void displayHistory(View view) {
+        Intent i = new Intent(MainActivity.this, QueryBlockchain.class);
+        i.putExtra("request", "history");
+        startActivity(i);
     }
 
 }
