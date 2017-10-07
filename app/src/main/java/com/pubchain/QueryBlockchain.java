@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import pubchaincom.pubchain.R;
+import com.pubchain.R;
 
 
 public class QueryBlockchain extends AppCompatActivity {

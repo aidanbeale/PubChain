@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import pubchaincom.pubchain.R;
+import com.pubchain.R;
 
 public class DisplayHistory extends AppCompatActivity {
 
@@ -19,6 +19,8 @@ public class DisplayHistory extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_display_history);
+        setTitle("PubChain - Transaction History");
+        //getActionBar().setIcon(R.drawable.my_icon);
         init();
     }
 
@@ -32,8 +34,7 @@ public class DisplayHistory extends AppCompatActivity {
         // Draw a new column for each location
         for (Alcohol a : alcohols) {
             createTableRow(a);
-            // Clean up bottom of table
-            createTableRowFinal();
+            //createTableRowFinal();
         }
     }
 

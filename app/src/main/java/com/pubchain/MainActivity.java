@@ -1,4 +1,4 @@
-package pubchaincom.pubchain;
+package com.pubchain;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -12,6 +12,8 @@ import com.pubchain.DisplayHistory;
 import com.pubchain.QueryBlockchain;
 
 import java.util.ArrayList;
+
+import com.pubchain.R;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -34,6 +36,16 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void createTestData() {
+        alcohols.add(new Alcohol("Carlton Draught", 5.0, 1.3));
+        alcohols.add(new Alcohol("Carlton Light", 3.2, 0.9));
+        alcohols.add(new Alcohol("Corona", 6.7, 1.8));
+        alcohols.add(new Alcohol("Carlton Draught", 5.0, 1.3));
+        alcohols.add(new Alcohol("Carlton Draught", 5.0, 1.3));
+        alcohols.add(new Alcohol("Carlton Draught", 5.0, 1.3));
+        alcohols.add(new Alcohol("Carlton Light", 3.2, 0.9));
+        alcohols.add(new Alcohol("Corona", 6.7, 1.8));
+        alcohols.add(new Alcohol("Carlton Draught", 5.0, 1.3));
+        alcohols.add(new Alcohol("Carlton Draught", 5.0, 1.3));
         alcohols.add(new Alcohol("Carlton Draught", 5.0, 1.3));
         alcohols.add(new Alcohol("Carlton Light", 3.2, 0.9));
         alcohols.add(new Alcohol("Corona", 6.7, 1.8));
