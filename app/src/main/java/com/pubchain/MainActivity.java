@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -16,6 +17,7 @@ public class MainActivity extends AppCompatActivity {
     private Button purchaseDrinkButton;
 
     private double tokenCount;
+    private boolean firstRun = true;
     ArrayList<Alcohol> alcohols = new ArrayList<>();
     ArrayList<Contact> contacts = new ArrayList<>();
 
@@ -28,7 +30,12 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().setLogo(R.mipmap.ic_launcher);
         getSupportActionBar().setDisplayUseLogoEnabled(true);
         createTestData();
-        queryBlockchain("getToken");
+
+        if (firstRun) {
+            queryBlockchain("getToken");
+            firstRun = false;
+        }
+
         init();
     }
 
@@ -37,10 +44,12 @@ public class MainActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         if(requestCode == 0) {
-
             tokenCount = data.getDoubleExtra("beerTokens", 0);
-
             beerCoins.setText(String.valueOf(tokenCount));
+        } else if (requestCode == 1) {
+            tokenCount -= 5;
+            beerCoins.setText(String.valueOf(tokenCount));
+            Toast.makeText(getApplicationContext(), "Successfully purchased: Carlton Draught 375ml - 5.0 BeerTokens", Toast.LENGTH_LONG).show();
         }
 
     }
@@ -84,19 +93,9 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void purchaseDrinkPressed(View view) {
-        //Intent i = new Intent(MainActivity.this, QueryBlockchain.class);
-        //i.putExtra("request", "getToken");
-        //startActivity(i);
-
-        createTestData();
-
-        //createTestData();
-
-        // beer purchased
-        // add to blockchain
-        // update token count
-
-        // Update transaction history activity?
+        Intent i = new Intent(MainActivity.this, QueryBlockchain.class);
+        i.putExtra("request", "sendToken");
+        startActivityForResult(i, 1);
     }
 
     private void updateUserInformation() {

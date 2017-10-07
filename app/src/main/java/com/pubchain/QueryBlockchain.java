@@ -93,15 +93,19 @@ public class QueryBlockchain extends AppCompatActivity {
     }
 
     private void makeTokenSetCountRequest() {
+        String customURL = URL + "/sendcoins";
+
         RequestQueue queue = Volley.newRequestQueue(QueryBlockchain.this);
 
         // Request a string response from the provided URL.
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() { // TODO Request type
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, customURL, new Response.Listener<String>() { // TODO Request type
 
             @Override
             public void onResponse(String response) {
                 Toast.makeText(getApplicationContext(), "Dis good:" + response, Toast.LENGTH_LONG).show();
-
+                Intent i = new Intent();
+                setResult(2, i);
+                finish();
             }
         }, new Response.ErrorListener() {
             @Override
@@ -115,7 +119,10 @@ public class QueryBlockchain extends AppCompatActivity {
             @Override
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<>();
-                params.put("accAddr", "NXT-QBU9-KSX6-6TH4-H47LR");
+                params.put("recipientAddr", "NXT-QBU9-KSX6-6TH4-H47LR");
+                params.put("secretPhrase", "salty somebody circle bloody wipe teeth quickly matter bid wrist despair pillow");
+                params.put("amountCoin", "5");
+                params.put("beerDetails", "Carlton Draught,5.0,1.3");
                 return params;
             }
         };
