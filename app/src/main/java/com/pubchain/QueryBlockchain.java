@@ -62,10 +62,6 @@ public class QueryBlockchain extends AppCompatActivity {
             makeTokenSetCountRequest();
         }
 
-        //Intent i = new Intent(QueryBlockchain.this, MainActivity.class);
-        //i.putParcelableArrayListExtra("alcohols", alcohols);
-        //i.putExtra("tokenCount", tokenCount);
-        //startActivity(i);
     }
 
     private void makeDrinksRequest() {
@@ -76,7 +72,11 @@ public class QueryBlockchain extends AppCompatActivity {
 
             @Override
             public void onResponse(String response) {
-                // TODO do something with response
+                Toast.makeText(getApplicationContext(), "Dis good:" + response, Toast.LENGTH_LONG).show();
+                JsonObject jsonResponse = stringToJsonObject(response);
+                String result = jsonResponse.getString("result", "actionError");
+
+                //tokenCount = Double.valueOf(stringCount) / 10;
 
             }
         }, new Response.ErrorListener() {
@@ -134,21 +134,13 @@ public class QueryBlockchain extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "Error querying server\nError Code: " + error.toString(), Toast.LENGTH_LONG).show();
             }
         }) {
-
+            //adding parameters to the request
             @Override
-            public String getBodyContentType() {
-                return String.format("application/json; charset=utf-8");
-            }
-
-            @Override
-            public byte[] getBody() throws AuthFailureError {
-                try {
-                    return requestBody == null ? null : requestBody.getBytes("utf-8");
-                } catch (UnsupportedEncodingException uee) {
-                    VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s",
-                            requestBody, "utf-8");
-                    return null;
-                }
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<>();
+                params.put("acc", ""); // TODO params
+                System.out.println("Parameters: " + params);
+                return params;
             }
         };
         // Add the request to the RequestQueue.
@@ -194,21 +186,13 @@ public class QueryBlockchain extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "Error querying server\nError Code: " + error.toString(), Toast.LENGTH_LONG).show();
             }
         }) {
-
+            //adding parameters to the request
             @Override
-            public String getBodyContentType() {
-                return String.format("application/json; charset=utf-8");
-            }
-
-            @Override
-            public byte[] getBody() throws AuthFailureError {
-                try {
-                    return requestBody == null ? null : requestBody.getBytes("utf-8");
-                } catch (UnsupportedEncodingException uee) {
-                    VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s",
-                            requestBody, "utf-8");
-                    return null;
-                }
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<>();
+                params.put("acc", ""); // TODO params
+                System.out.println("Parameters: " + params);
+                return params;
             }
         };
         // Add the request to the RequestQueue.

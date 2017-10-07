@@ -1,5 +1,6 @@
 package com.pubchain;
 
+import android.app.ActionBar;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -21,6 +22,10 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        getSupportActionBar().setLogo(R.mipmap.ic_launcher);
+        getSupportActionBar().setDisplayUseLogoEnabled(true);
+
         init();
     }
 
@@ -46,16 +51,18 @@ public class MainActivity extends AppCompatActivity {
         alcohols.add(new Alcohol("Carlton Draught", 5.0, 1.3));
         alcohols.add(new Alcohol("Carlton Draught", 5.0, 1.3));
 
-        Intent i = new Intent(MainActivity.this, QueryBlockchain.class);
+        Intent i = new Intent(MainActivity.this, DisplayHistory.class);
         i.putParcelableArrayListExtra("alcohols", alcohols);
         startActivity(i);
     }
 
 
     public void purchaseDrinkPressed(View view) {
-        Intent i = new Intent(MainActivity.this, QueryBlockchain.class);
-        i.putExtra("request", "getToken");
-        startActivity(i);
+        //Intent i = new Intent(MainActivity.this, QueryBlockchain.class);
+        //i.putExtra("request", "getToken");
+        //startActivity(i);
+
+        createTestData();
 
         //createTestData();
 
@@ -71,9 +78,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void displayHistory(View view) {
-        Intent i = new Intent(MainActivity.this, QueryBlockchain.class);
-        i.putExtra("request", "history");
-        startActivity(i);
+        createTestData();
+        //Intent i = new Intent(MainActivity.this, QueryBlockchain.class);
+        //i.putExtra("request", "history");
+        //startActivity(i);
     }
 
 }

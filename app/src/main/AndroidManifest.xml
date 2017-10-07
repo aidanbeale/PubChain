@@ -20,6 +20,7 @@
         </activity>
         <activity android:name="com.pubchain.QueryBlockchain" />
         <activity android:name="com.pubchain.DisplayHistory"></activity>
+
     </application>
 
 </manifest>
