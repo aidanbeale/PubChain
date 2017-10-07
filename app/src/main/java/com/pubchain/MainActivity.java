@@ -12,7 +12,7 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
-    private TextView tokenCountTextView;
+    private TextView beerCoins;
     private Button purchaseDrinkButton;
 
     private double tokenCount;
@@ -22,16 +22,37 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);
 
         getSupportActionBar().setLogo(R.mipmap.ic_launcher);
         getSupportActionBar().setDisplayUseLogoEnabled(true);
         createTestData();
+        queryBlockchain("getToken");
         init();
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(requestCode == 0) {
+
+            tokenCount = data.getDoubleExtra("beerTokens", 0);
+
+            beerCoins.setText(String.valueOf(tokenCount));
+        }
+
+    }
+
+    private void queryBlockchain(String query) {
+        Intent i = new Intent(MainActivity.this, QueryBlockchain.class);
+        i.putExtra("request", query);
+        startActivityForResult(i, 0);
+    }
+
     private void init() {
-        tokenCountTextView = (TextView) findViewById(R.id.tokenCountTextView);
+        beerCoins = (TextView) findViewById(R.id.beerCoins);
         purchaseDrinkButton = (Button) findViewById(R.id.purchaseDrinkButton);
     }
 
@@ -58,6 +79,7 @@ public class MainActivity extends AppCompatActivity {
         contacts.add(new Contact("Hayden Garran", "fakeNXTAddr"));
         contacts.add(new Contact("Hannah Morwood", "fakeNXTAddr"));
         contacts.add(new Contact("Brayden Macaulay", "fakeNXTAddr"));
+        contacts.add(new Contact("Joel Hansen", "fakeNXTAddr"));
     }
 
 
