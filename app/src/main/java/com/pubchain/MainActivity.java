@@ -17,6 +17,7 @@ public class MainActivity extends AppCompatActivity {
 
     private double tokenCount;
     ArrayList<Alcohol> alcohols = new ArrayList<>();
+    ArrayList<Contact> contacts = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
 
         getSupportActionBar().setLogo(R.mipmap.ic_launcher);
         getSupportActionBar().setDisplayUseLogoEnabled(true);
-
+        createTestData();
         init();
     }
 
@@ -51,9 +52,12 @@ public class MainActivity extends AppCompatActivity {
         alcohols.add(new Alcohol("Carlton Draught", 5.0, 1.3));
         alcohols.add(new Alcohol("Carlton Draught", 5.0, 1.3));
 
-        Intent i = new Intent(MainActivity.this, DisplayHistory.class);
-        i.putParcelableArrayListExtra("alcohols", alcohols);
-        startActivity(i);
+        contacts.add(new Contact("John Smith", "fakeNXTAddr"));
+        contacts.add(new Contact("Julie Hansen", "fakeNXTAddr"));
+        contacts.add(new Contact("Mason Shenton", "fakeNXTAddr"));
+        contacts.add(new Contact("Hayden Garran", "fakeNXTAddr"));
+        contacts.add(new Contact("Hannah Morwood", "fakeNXTAddr"));
+        contacts.add(new Contact("Brayden Macaulay", "fakeNXTAddr"));
     }
 
 
@@ -78,10 +82,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void displayHistory(View view) {
-        createTestData();
-        //Intent i = new Intent(MainActivity.this, QueryBlockchain.class);
-        //i.putExtra("request", "history");
-        //startActivity(i);
+        Intent i = new Intent(MainActivity.this, DisplayHistory.class);
+        i.putParcelableArrayListExtra("alcohols", alcohols);
+        startActivity(i);
     }
 
+    public void displayContacts(View view) {
+        Intent i = new Intent(MainActivity.this, FriendsActivity.class);
+        i.putParcelableArrayListExtra("contacts", contacts);
+        startActivity(i);
+    }
 }

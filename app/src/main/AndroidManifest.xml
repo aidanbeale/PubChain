@@ -18,9 +18,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.pubchain.QueryBlockchain" />
-        <activity android:name="com.pubchain.DisplayHistory"></activity>
-
+        <activity android:name=".QueryBlockchain" />
+        <activity android:name=".DisplayHistory" />
+        <activity android:name=".FriendsActivity" />
+        <activity android:name=".FriendInfo"></activity>
     </application>
 
 </manifest>
